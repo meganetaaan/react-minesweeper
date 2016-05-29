@@ -74,12 +74,6 @@ var mineNumColor = {
 };
 
 var style = {
-  title: {
-    flex: 3,
-    marginLeft: '40px',
-    fontSize: '1.2em',
-    color: '#FAFAFA'
-  },
   appContainer: {
     minHeight: '100vh',
     display: 'flex',
@@ -93,26 +87,32 @@ var style = {
     justifyContent: 'center',
     height: '42px',
     marginBottom: '4px',
-    fontSize: '1.1em',
+    fontSize: '1em',
     backgroundColor: '#BF360C',
     boxShadow: '0 0 4px rgba(0,0,0,.7),0 2px 4px rgba(0,0,0,.14)',
     zIndex: 2
+  },
+  title: {
+    flex: 3,
+    fontSize: '1em',
+    textAlign: 'center',
+    color: '#FAFAFA'
   },
   levelSelect: {
     flex: 1,
     textAlign: 'center'
   },
   flagAndMineCount: {
-    flex: 1,
+    flex: 2,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
   },
   timer: {
-    flex: 1,
+    flex: 2,
     width: '200px',
     height: '1.4em',
-    fontSize: '1.1em',
+    fontSize: '1em',
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
@@ -611,9 +611,10 @@ var TimerCount = function (_React$Component5) {
     _this7.timer.on('reset', function (data) {
       _this7.setState(data);
     });
-    _this7.timer.on('frame', function (data) {
+    _this7.timer.on('second', function (data) {
       _this7.setState(data);
     });
+    //this.timer.on('frame', data => { this.setState(data); });
 
     _this7.emitter = _this7.props.emitter;
     _this7.emitter.on('change-phase', function (phase) {
@@ -637,8 +638,7 @@ var TimerCount = function (_React$Component5) {
           style: style.timer },
         '◴',
         ' ',
-        _formatter2.default.formatTimeString(this.state.milliseconds),
-        _formatter2.default.formatMsecString(this.state.milliseconds)
+        _formatter2.default.formatTimeString(this.state.milliseconds)
       );
     }
   }]);

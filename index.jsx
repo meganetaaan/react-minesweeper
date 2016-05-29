@@ -24,12 +24,6 @@ const mineNumColor = {
 };
 
 const style = {
-  title: {
-    flex: 3,
-    marginLeft: '40px',
-    fontSize: '1.2em',
-    color: '#FAFAFA'
-  },
   appContainer: {
     minHeight: '100vh',
     display: 'flex',
@@ -43,26 +37,32 @@ const style = {
     justifyContent: 'center',
     height: '42px',
     marginBottom: '4px',
-    fontSize: '1.1em',
+    fontSize: '1em',
     backgroundColor: '#BF360C',
     boxShadow: '0 0 4px rgba(0,0,0,.7),0 2px 4px rgba(0,0,0,.14)',
     zIndex: 2
+  },
+  title: {
+    flex: 3,
+    fontSize: '1em',
+    textAlign: 'center',
+    color: '#FAFAFA'
   },
   levelSelect: {
     flex: 1,
     textAlign: 'center'
   },
   flagAndMineCount: {
-    flex: 1,
+    flex: 2,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
   },
   timer: {
-    flex: 1,
+    flex: 2,
     width: '200px',
     height: '1.4em',
-    fontSize: '1.1em',
+    fontSize: '1em',
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
@@ -415,7 +415,8 @@ class TimerCount extends React.Component{
     this.timer = new Timer();
     this.timer.on('start', data => { this.setState(data); });
     this.timer.on('reset', data => { this.setState(data); });
-    this.timer.on('frame', data => { this.setState(data); });
+    this.timer.on('second', data => { this.setState(data); });
+    //this.timer.on('frame', data => { this.setState(data); });
 
     this.emitter = this.props.emitter;
     this.emitter.on('change-phase', (phase)=> {
@@ -434,7 +435,6 @@ class TimerCount extends React.Component{
     style={style.timer}>
     {'\u25F4'}&nbsp;
     {TimeFormatUtil.formatTimeString(this.state.milliseconds)}
-    {TimeFormatUtil.formatMsecString(this.state.milliseconds)}
     </div>;
   }
 }
