@@ -1,4 +1,4 @@
-# minesweeper-standalone
+# react-minesweeper
 
-Yet another minesweeper game.
-[Let's Play!!](https://meganetaaan.github.io/minesweeper-standalone/)
+Yet another minesweeper game made with react.
+[Let's Play!!](https://meganetaaan.github.io/react-minesweeper/)
