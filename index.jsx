@@ -32,9 +32,7 @@ const style = {
     fontFamily: '"游ゴシック", YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", sans-serif'
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //display: 'flex',
     height: '42px',
     marginBottom: '4px',
     fontSize: '1em',
@@ -42,9 +40,21 @@ const style = {
     boxShadow: '0 0 4px rgba(0,0,0,.7),0 2px 4px rgba(0,0,0,.14)',
     zIndex: 2
   },
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    width: '100%',
+    height: '100%',
+    maxWidth: 'calc(100vmin - 48px)'
+  },
   title: {
     flex: 3,
     fontSize: '1em',
+    fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
   },
@@ -120,6 +130,10 @@ class AppContainer extends React.Component {
     style={style.appContainer}>
     <div class={"header"}
     style={style.header}>
+    <div
+      class={"header-content"}
+      style={style.headerContent}
+    >
     <div style={style.title}>MineSweeper</div>
     <select style={style.levelSelect} onChange={this.onChangeLevel.bind(this)}>
     <option value="BEGINNER">BEGINNER</option>
@@ -132,6 +146,7 @@ class AppContainer extends React.Component {
     <TimerCount
     emitter={this.emitter}
     />
+    </div>
     </div>
     <Field
     field={this.field}
