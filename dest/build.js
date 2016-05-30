@@ -82,9 +82,7 @@ var style = {
     fontFamily: '"游ゴシック", YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", sans-serif'
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //display: 'flex',
     height: '42px',
     marginBottom: '4px',
     fontSize: '1em',
@@ -92,9 +90,21 @@ var style = {
     boxShadow: '0 0 4px rgba(0,0,0,.7),0 2px 4px rgba(0,0,0,.14)',
     zIndex: 2
   },
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    width: '100%',
+    height: '100%',
+    maxWidth: 'calc(100vmin - 48px)'
+  },
   title: {
     flex: 3,
     fontSize: '1em',
+    fontWeight: 'bold',
     textAlign: 'center',
     color: '#FAFAFA'
   },
@@ -198,30 +208,37 @@ var AppContainer = function (_React$Component) {
               style: style.header },
             _react2.default.createElement(
               'div',
-              { style: style.title },
-              'MineSweeper'
-            ),
-            _react2.default.createElement(
-              'select',
-              { style: style.levelSelect, onChange: this.onChangeLevel.bind(this) },
+              {
+                'class': "header-content",
+                style: style.headerContent
+              },
               _react2.default.createElement(
-                'option',
-                { value: 'BEGINNER' },
-                'BEGINNER'
+                'div',
+                { style: style.title },
+                'MineSweeper'
               ),
               _react2.default.createElement(
-                'option',
-                { value: 'INTERMEDIATE' },
-                'INTERMEDIATE'
-              )
-            ),
-            _react2.default.createElement(FlagAndMineCount, {
-              flagNum: this.state.flagNum,
-              totalMineNum: this.state.totalMineNum
-            }),
-            _react2.default.createElement(TimerCount, {
-              emitter: this.emitter
-            })
+                'select',
+                { style: style.levelSelect, onChange: this.onChangeLevel.bind(this) },
+                _react2.default.createElement(
+                  'option',
+                  { value: 'BEGINNER' },
+                  'BEGINNER'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: 'INTERMEDIATE' },
+                  'INTERMEDIATE'
+                )
+              ),
+              _react2.default.createElement(FlagAndMineCount, {
+                flagNum: this.state.flagNum,
+                totalMineNum: this.state.totalMineNum
+              }),
+              _react2.default.createElement(TimerCount, {
+                emitter: this.emitter
+              })
+            )
           ),
           _react2.default.createElement(Field, {
             field: this.field,
