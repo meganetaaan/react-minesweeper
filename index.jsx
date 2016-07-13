@@ -1,6 +1,7 @@
 import MineSweeper from 'minesweeper-engine';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Flux, Component} from 'flumpt';
 import Timer from 'countup-timer';
 import TimeFormatUtil from './formatter';
 import {EventEmitter} from 'events';
@@ -126,26 +127,26 @@ class AppContainer extends React.Component {
   //TODO: make Header Component
   render(){
     return <div>
-    <div class={"app-container"}
+    <div className={"app-container"}
     style={style.appContainer}>
-    <div class={"header"}
+    <div className={"header"}
     style={style.header}>
     <div
-      class={"header-content"}
-      style={style.headerContent}
+    className={"header-content"}
+    style={style.headerContent}
     >
     <div style={style.title}>MineSweeper</div>
     <select style={style.levelSelect} onChange={this.onChangeLevel.bind(this)}>
     <option value="BEGINNER">BEGINNER</option>
     <option value="INTERMEDIATE">INTERMEDIATE</option>
     </select>
-    <FlagAndMineCount 
+    <FlagAndMineCount
     flagNum={this.state.flagNum}
     totalMineNum={this.state.totalMineNum}
-    />
+      />
     <TimerCount
     emitter={this.emitter}
-    />
+      />
     </div>
     </div>
     <Field
@@ -171,6 +172,7 @@ class Field extends React.Component {
     this._mineSweeperLogic = new MineSweeperLogic();
     this.emitter = this.props.emitter || new EventEmitter;
     this.dispatch = this.props.dispatch;
+    this._touchedCell = null;
     this.state = {
       field: [[]],
       flags: [[]],
@@ -219,13 +221,13 @@ class Field extends React.Component {
     const level = this.props.level || 'BEGINNER';
     this._reset(level);
     /*
-    const data = this._mineSweeperLogic.getNewField(level);
-    this.state = {
-      field: data.field,
-      flags: data.flags,
-      phase: PHASE.READY
-    };
-    */
+     const data = this._mineSweeperLogic.getNewField(level);
+     this.state = {
+     field: data.field,
+     flags: data.flags,
+     phase: PHASE.READY
+     };
+     */
   }
 
   _reset(level){
@@ -246,24 +248,24 @@ class Field extends React.Component {
     <tbody>
     {this.state.field.map(
       (row, rowNum) =>
-      <tr key={rowNum}>
-      {row.map(
-        (mineNum, colNum)=>
-        <Cell
-        key={rowNum + '_' + colNum}
-        dispatch={this.props.dispatch}
-        cell={
-          {
-            mineNum: mineNum,
-            flag: this.state.flags[rowNum][colNum],
-            isOpened: mineNum !== null,
-            row: rowNum,
-            col: colNum,
-            phase: this.state.phase
-          }
-        }/>
-      )}
-      </tr>
+        <tr key={rowNum}>
+        {row.map(
+          (mineNum, colNum)=>
+            <Cell
+          key={rowNum + '_' + colNum}
+          dispatch={this.props.dispatch}
+          cell={
+            {
+              mineNum: mineNum,
+              flag: this.state.flags[rowNum][colNum],
+              isOpened: mineNum !== null,
+              row: rowNum,
+              col: colNum,
+              phase: this.state.phase
+            }
+          }/>
+        )}
+        </tr>
     )}
     </tbody>
     </table>;
@@ -271,7 +273,11 @@ class Field extends React.Component {
 }
 
 class Cell extends React.Component {
-  _onClick(){
+  constructor(...args){
+    super(...args);
+    this._touchedY = null;
+  }
+  open(){
     if(this.props.cell.flag){
       return;
     } else {
@@ -281,8 +287,7 @@ class Cell extends React.Component {
       });
     }
   }
-  _onContextMenu(ev){
-    ev.preventDefault();
+  flag(){
     const phase = this.props.cell.phase;
     if([PHASE.CABOOM, PHASE.CLEARED].indexOf(phase) !== -1 || this.props.cell.isOpened){
       return;
@@ -291,6 +296,22 @@ class Cell extends React.Component {
       row: this.props.cell.row,
       col: this.props.cell.col
     });
+  }
+  _onTouchStart(ev){
+    this._touchedY = ev.changedTouches[0].clientY;
+  }
+  _onTouchEnd(ev){
+    if(ev.changedTouches[0].clientY - this._touchedY > 50){
+      this.flag();
+    }
+  }
+  _onClick(ev){
+    ev.preventDefault();
+    this.open();
+  }
+  _onContextMenu(ev){
+    ev.preventDefault();
+    this.flag();
   }
   _mineNumber(cell){
     if(cell.flag){
@@ -312,6 +333,8 @@ class Cell extends React.Component {
     return <td
     style={cellStyle}
     onClick={this._onClick.bind(this)}
+    onTouchStart={this._onTouchStart.bind(this)}
+    onTouchEnd={this._onTouchEnd.bind(this)}
     onContextMenu={this._onContextMenu.bind(this)}
     >
     <div style={{maxHeight: '1.4em', overflow: 'hidden'}}>
